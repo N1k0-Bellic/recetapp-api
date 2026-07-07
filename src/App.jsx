@@ -1,76 +1,78 @@
 import { useEffect, useState } from "react";
 
-// Importamos todos los componentes que usa la aplicacion
 import Header from "./components/Header";
-import SearchBar from "./components/SearchBar"; // NUEVO: componente de barra de busqueda
+import SearchBar from "./components/SearchBar";
 import RecipeList from "./components/RecipeList";
+import FavoritesPanel from "./components/FavoritesPanel";
 import Loading from "./components/Loading";
 import ErrorMessage from "./components/ErrorMessage";
 
-// Importamos la funcion que consulta la API de recetas
 import { obtenerRecetas } from "./services/api";
-
-// Importamos los estilos de la aplicacion
 import "./App.css";
 
 function App() {
-  // Estado para guardar todas las recetas obtenidas de la API
   const [recetas, setRecetas] = useState([]);
-  // Estado para controlar si los datos estan cargando (muestra spinner/texto)
   const [cargando, setCargando] = useState(true);
-  // Estado para controlar si hubo un error al consultar la API
   const [error, setError] = useState(false);
-  // NUEVO: Estado para almacenar el texto que el usuario escribe en la barra de busqueda
   const [busqueda, setBusqueda] = useState("");
+  // Array de IDs de recetas favoritas
+  const [favoritos, setFavoritos] = useState([]);
 
-  // useEffect se ejecuta una sola vez al montar el componente (array vacio [])
-  // Aqui cargamos las recetas desde la API
   useEffect(() => {
     async function cargarRecetas() {
       try {
-        // Llamamos a la funcion del servicio que hace el fetch a la API
         const datos = await obtenerRecetas();
         setRecetas(datos);
       } catch {
-        // Si hay un error, activamos el estado de error
         setError(true);
       } finally {
-        // Siempre desactivamos el estado de carga al terminar
         setCargando(false);
       }
     }
-
     cargarRecetas();
   }, []);
 
-  // NUEVO: Filtramos las recetas segun lo que el usuario escriba en la barra de busqueda
-  // Convertimos ambos textos a minusculas con .toLowerCase() para que la busqueda
-  // no distinga entre mayusculas y minusculas (busqueda case-insensitive)
-  // Ejemplo: si busqueda = "chick", mostrara "Chicken Handi", "Chicken Marengo", etc.
+  // Filtra por nombre de forma case-insensitive (sin dinstinguir mayus).
   const recetasFiltradas = recetas.filter((receta) =>
     receta.strMeal.toLowerCase().includes(busqueda.toLowerCase())
   );
 
+  // 0Obtiene los objetos completos de las recetas favoritas
+  const recetasFavoritas = recetas.filter((receta) =>
+    favoritos.includes(receta.idMeal)
+  );
+
+  //--Agrega o quita un ID del array de favoritos
+  const toggleFavorito = (id) => {
+    setFavoritos((prev) =>
+      prev.includes(id) ? prev.filter((fav) => fav !== id) : [...prev, id]
+    );
+  };
+
   return (
     <main>
-      {/* Header con el titulo de la app y los nombres de los integrantes */}
       <Header />
 
-      {/* NUEVO: Barra de busqueda - solo se muestra cuando los datos ya cargaron sin error */}
       {!cargando && !error && (
         <SearchBar busqueda={busqueda} setBusqueda={setBusqueda} />
       )}
 
-      {/* Indicador de carga mientras se consulta la API */}
       {cargando && <Loading />}
-
-      {/* Mensaje de error si la peticion a la API fallo */}
       {error && <ErrorMessage />}
 
-      {/* Listado de recetas: pasamos recetasFiltradas en vez de recetas */}
-      {/* Asi el listado solo muestra las recetas que coinciden con la busqueda */}
+      {/* Layout de dos columnas: listado a la izquierda, panel a la derecha ,.*/}
       {!cargando && !error && (
-        <RecipeList recetas={recetasFiltradas} />
+        <div className="app-layout">
+          <RecipeList
+            recetas={recetasFiltradas}
+            favoritos={favoritos}
+            toggleFavorito={toggleFavorito}
+          />
+          <FavoritesPanel
+            recetasFavoritas={recetasFavoritas}
+            toggleFavorito={toggleFavorito}
+          />
+        </div>
       )}
     </main>
   );

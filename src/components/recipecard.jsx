@@ -1,30 +1,22 @@
-/**
- Componente RecipeCard - Muestra una tarjeta individual con los datos de una receta
- *
- Props que recibe:
- - receta: objeto con los datos de la receta obtenidos de la API
- *------(strMeal, strMealThumb, strCategory, strArea, idMeal)------
- */
-function RecipeCard({ receta }) {
+// Tarjeta individual de una receta
+// Props: receta, esFavorito (booleano), toggleFavorito (función)
+function RecipeCard({ receta, esFavorito, toggleFavorito }) {
   return (
-    // article con clase 'recipe-card' para los estilos de tarjeta definidos en App.css---
     <article className="recipe-card">
-      {/* Imagen de la receta: ocupa todo el ancho de la tarjeta --*/}
-      <img
-        src={receta.strMealThumb}
-        alt={receta.strMeal}
-      />
+      <img src={receta.strMealThumb} alt={receta.strMeal} />
 
-      {/* Contenido de texto dentro de la tarjeta */}
       <div className="recipe-card-body">
-        {/*-- Nombre de la receta --*/}
         <h3>{receta.strMeal}</h3>
-
-        {/* --Categoria de la receta --*/}
         <p>Categoría: {receta.strCategory}</p>
-
-        {/* --Pais de origen de la receta --*/}
         <p>Origen: {receta.strArea}</p>
+
+        {/* Botón que cambia de texto y estilo según si ya es favorito o no */}
+        <button
+          className={`btn-favorito ${esFavorito ? "activo" : ""}`}
+          onClick={() => toggleFavorito(receta.idMeal)}
+        >
+          {esFavorito ? "⭐ Favorito" : "☆ Agregar a favoritos"}
+        </button>
       </div>
     </article>
   );

@@ -1,23 +1,19 @@
 import RecipeCard from "./RecipeCard";
 
-/**
- Componente RecipeList - Muestra el listado de recetas en formato grilla (grid)
- Props que recibe:
- - recetas: array de objetos receta a mostrar (ya viene filtrado desde App)
- */
-function RecipeList({ recetas }) {
+// Muestra el listado de recetas en formato grilla
+// Props: recetas (filtradas), favoritos (array de IDs), toggleFavorito
+function RecipeList({ recetas, favoritos, toggleFavorito }) {
   return (
-    <section>
-      {/* Titulo con el numero de recetas visibles entre parentesis */}
+    <section className="recipe-list-section">
       <h2>Listado de recetas ({recetas.length})</h2>
 
-      {/* Contenedor con clase 'recipe-list' que activa el CSS Grid */}
-      {/* Cada receta se renderiza como un RecipeCard dentro del grid */}
       <div className="recipe-list">
         {recetas.map((receta) => (
           <RecipeCard
             key={receta.idMeal}
             receta={receta}
+            esFavorito={favoritos.includes(receta.idMeal)}
+            toggleFavorito={toggleFavorito}
           />
         ))}
       </div>
