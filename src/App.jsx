@@ -9,6 +9,7 @@ import BlockedPanel from "./components/BlockedPanel";
 import Stats from "./components/Stats";
 import Loading from "./components/Loading";
 import ErrorMessage from "./components/ErrorMessage";
+import OriginFilter from "./components/OriginFilter";
 
 import { obtenerRecetas } from "./services/api";
 import "./App.css";
@@ -18,6 +19,7 @@ function App() {
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(false);
   const [busqueda, setBusqueda] = useState("");
+  const [origenSeleccionado, setOrigenSeleccionado] = useState("");
   const [mostrarTodas, setMostrarTodas] = useState(false);
 
   const [favoritos, setFavoritos] = useLocalStorage("recetapp-favoritos", []);
@@ -41,8 +43,16 @@ function App() {
   const recetasFiltradas = recetas.filter(
     (receta) =>
       receta.strMeal.toLowerCase().includes(busqueda.toLowerCase()) &&
+      (origenSeleccionado === "" || receta.strArea === origenSeleccionado) &&
       !bloqueados.includes(receta.idMeal)
   );
+
+    // Calcula los origenes que realmente existen entre las recetas cargadas,
+    // sin duplicados (Set) y ordenados alfabeticamente. Así el filtro nunca
+    // muestra un país que no tenga ninguna receta.
+    const origenesDisponibles = [
+      ...new Set(recetas.map((receta) => receta.strArea).filter(Boolean)),
+    ].sort();
 
   const recetasParaMostrar = mostrarTodas
     ? recetasFiltradas
@@ -86,6 +96,12 @@ function App() {
           </section>
 
           <SearchBar busqueda={busqueda} setBusqueda={setBusqueda} />
+
+          <OriginFilter
+            origenes={origenesDisponibles}
+            origenSeleccionado={origenSeleccionado}
+            setOrigenSeleccionado={setOrigenSeleccionado}
+          />
 
           <Stats
             total={recetas.length}

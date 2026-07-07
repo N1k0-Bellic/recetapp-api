@@ -13,9 +13,6 @@ export async function obtenerRecetas() {
     })
   );
 
-  // Promise.all espera todas las peticiones al mismo tiempo
   const resultados = await Promise.all(promesas);
-
-  // Unimos todos los arrays de recetas en uno solo
   return resultados.flatMap((datos) => datos.meals || []);
 }

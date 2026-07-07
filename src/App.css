@@ -401,3 +401,38 @@
   color: var(--text-h);
   flex-wrap: wrap;
 }
+
+/* ===== FILTRO POR ORIGEN ===== */
+
+.origin-filter {
+  padding: 0 20px;
+  margin-bottom: 16px;
+}
+
+.origin-filter select {
+  width: 100%;
+  max-width: 300px;
+  padding: 10px 14px;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text-h);
+  font-family: var(--sans);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.origin-filter select:focus {
+  outline: none;
+  border-color: var(--accent, #333);
+}
+
+@media (max-width: 480px) {
+  .origin-filter {
+    padding: 0 12px;
+  }
+
+  .origin-filter select {
+    max-width: 100%;
+  }
+}
