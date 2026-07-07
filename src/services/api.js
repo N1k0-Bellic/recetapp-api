@@ -1,0 +1,1 @@
+"Aquí se implementará la conexión con TheMealDB en la siguiente etapa del proyecto"
