@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import { useLocalStorage } from "./hooks/useLocalStorage";
 
 import Header from "./components/Header";
-import SearchBar from "./components/SearchBar";
-import RecipeList from "./components/RecipeList";
-import FavoritesPanel from "./components/FavoritesPanel";
-import BlockedPanel from "./components/BlockedPanel";
+import SearchBar from "./components/Searchbar";
+import RecipeList from "./components/Recipelist";
+import FavoritesPanel from "./components/Favoritespanel";
+import BlockedPanel from "./components/Blockedpanel";
 import Stats from "./components/Stats";
 import Loading from "./components/Loading";
-import ErrorMessage from "./components/ErrorMessage";
+import ErrorMessage from "./components/Errormessage";
 
 import { obtenerRecetas } from "./services/api";
 import "./App.css";
