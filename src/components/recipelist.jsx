@@ -1,8 +1,8 @@
 import RecipeCard from "./RecipeCard";
 
 // Muestra el listado de recetas en formato grilla
-// Props: recetas (filtradas), favoritos (array de IDs), toggleFavorito
-function RecipeList({ recetas, favoritos, toggleFavorito }) {
+// Props: recetas (filtradas), favoritos (array de IDs), toggleFavorito, toggleBloqueo
+function RecipeList({ recetas, favoritos, toggleFavorito, toggleBloqueo }) {
   return (
     <section className="recipe-list-section">
       <h2>Listado de recetas ({recetas.length})</h2>
@@ -14,6 +14,7 @@ function RecipeList({ recetas, favoritos, toggleFavorito }) {
             receta={receta}
             esFavorito={favoritos.includes(receta.idMeal)}
             toggleFavorito={toggleFavorito}
+            toggleBloqueo={toggleBloqueo}
           />
         ))}
       </div>

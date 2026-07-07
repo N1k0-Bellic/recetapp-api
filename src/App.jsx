@@ -4,6 +4,8 @@ import Header from "./components/Header";
 import SearchBar from "./components/SearchBar";
 import RecipeList from "./components/RecipeList";
 import FavoritesPanel from "./components/FavoritesPanel";
+import BlockedPanel from "./components/BlockedPanel";
+import Stats from "./components/Stats";
 import Loading from "./components/Loading";
 import ErrorMessage from "./components/ErrorMessage";
 
@@ -17,6 +19,8 @@ function App() {
   const [busqueda, setBusqueda] = useState("");
   // Array de IDs de recetas favoritas
   const [favoritos, setFavoritos] = useState([]);
+  // Array de IDs de recetas bloqueadas
+  const [bloqueados, setBloqueados] = useState([]);
 
   useEffect(() => {
     async function cargarRecetas() {
@@ -32,14 +36,21 @@ function App() {
     cargarRecetas();
   }, []);
 
-  // Filtra por nombre de forma case-insensitive (sin dinstinguir mayus).
-  const recetasFiltradas = recetas.filter((receta) =>
-    receta.strMeal.toLowerCase().includes(busqueda.toLowerCase())
+  // Filtra por nombre Y excluye las recetas bloqueadas
+  const recetasFiltradas = recetas.filter(
+    (receta) =>
+      receta.strMeal.toLowerCase().includes(busqueda.toLowerCase()) &&
+      !bloqueados.includes(receta.idMeal)
   );
 
-  // 0Obtiene los objetos completos de las recetas favoritas
+  // Obtiene los objetos completos de las recetas favoritas
   const recetasFavoritas = recetas.filter((receta) =>
     favoritos.includes(receta.idMeal)
+  );
+
+  // Obtiene los objetos completos de las recetas bloqueadas
+  const recetasBloqueadas = recetas.filter((receta) =>
+    bloqueados.includes(receta.idMeal)
   );
 
   //--Agrega o quita un ID del array de favoritos
@@ -49,29 +60,54 @@ function App() {
     );
   };
 
+  //--Agrega o quita un ID del array de bloqueados
+  const toggleBloqueo = (id) => {
+    setBloqueados((prev) => {
+      const yaBloqueado = prev.includes(id);
+      return yaBloqueado ? prev.filter((b) => b !== id) : [...prev, id];
+    });
+
+    // Si se está bloqueando (no estaba bloqueado antes), se saca de favoritos
+    setFavoritos((prev) => prev.filter((fav) => fav !== id));
+  };
+
   return (
     <main>
       <Header />
 
       {!cargando && !error && (
-        <SearchBar busqueda={busqueda} setBusqueda={setBusqueda} />
+        <>
+          <SearchBar busqueda={busqueda} setBusqueda={setBusqueda} />
+          <Stats
+            total={recetas.length}
+            favoritos={favoritos.length}
+            bloqueados={bloqueados.length}
+          />
+        </>
       )}
 
       {cargando && <Loading />}
       {error && <ErrorMessage />}
 
-      {/* Layout de dos columnas: listado a la izquierda, panel a la derecha ,.*/}
+      {/* Layout de dos columnas: listado a la izquierda, panel a la derecha */}
       {!cargando && !error && (
         <div className="app-layout">
           <RecipeList
             recetas={recetasFiltradas}
             favoritos={favoritos}
             toggleFavorito={toggleFavorito}
+            toggleBloqueo={toggleBloqueo}
           />
-          <FavoritesPanel
-            recetasFavoritas={recetasFavoritas}
-            toggleFavorito={toggleFavorito}
-          />
+          <div className="sidebar">
+            <FavoritesPanel
+              recetasFavoritas={recetasFavoritas}
+              toggleFavorito={toggleFavorito}
+            />
+            <BlockedPanel
+              recetasBloqueadas={recetasBloqueadas}
+              toggleBloqueo={toggleBloqueo}
+            />
+          </div>
         </div>
       )}
     </main>
