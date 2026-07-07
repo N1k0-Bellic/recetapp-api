@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLocalStorage } from "./hooks/useLocalStorage";
 
 import Header from "./components/Header";
 import SearchBar from "./components/SearchBar";
@@ -17,10 +18,10 @@ function App() {
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(false);
   const [busqueda, setBusqueda] = useState("");
-  // Array de IDs de recetas favoritas
-  const [favoritos, setFavoritos] = useState([]);
-  // Array de IDs de recetas bloqueadas
-  const [bloqueados, setBloqueados] = useState([]);
+  // Array de IDs de recetas favoritas (persistido en localStorage)
+  const [favoritos, setFavoritos] = useLocalStorage("recetapp-favoritos", []);
+  // Array de IDs de recetas bloqueadas (persistido en localStorage)
+  const [bloqueados, setBloqueados] = useLocalStorage("recetapp-bloqueados", []);
 
   useEffect(() => {
     async function cargarRecetas() {
