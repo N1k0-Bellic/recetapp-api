@@ -1,4 +1,4 @@
-import RecipeCard from "./Recipecard";
+import RecipeCard from "./RecipeCard";
 
 // Muestra el listado de recetas en formato grilla
 // Props: recetas (filtradas), favoritos (array de IDs), toggleFavorito, toggleBloqueo
