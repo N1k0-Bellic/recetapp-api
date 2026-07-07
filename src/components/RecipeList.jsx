@@ -5,7 +5,7 @@ import RecipeCard from "./RecipeCard";
 function RecipeList({ recetas, favoritos, toggleFavorito, toggleBloqueo }) {
   return (
     <section className="recipe-list-section">
-      <h2>Listado de recetas ({recetas.length})</h2>
+      <h2>Listado de menu ({recetas.length})</h2>
 
       <div className="recipe-list">
         {recetas.map((receta) => (

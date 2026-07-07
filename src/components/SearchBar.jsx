@@ -5,7 +5,7 @@ function SearchBar({ busqueda, setBusqueda }) {
     <div className="search-bar">
       <input
         type="text"
-        placeholder="🔍 Buscar receta por nombre..."
+        placeholder="🔍 Buscar platos por nombre..."
         value={busqueda}
         onChange={(e) => setBusqueda(e.target.value)}
       />

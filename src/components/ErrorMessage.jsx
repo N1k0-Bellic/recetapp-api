@@ -1,5 +1,5 @@
 function ErrorMessage() {
-  return <p>No fue posible cargar las recetas.</p>;
+  return <p>No fue posible cargar los platos.</p>;
 }
 
 export default ErrorMessage;

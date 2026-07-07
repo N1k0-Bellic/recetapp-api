@@ -18,9 +18,9 @@ function App() {
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(false);
   const [busqueda, setBusqueda] = useState("");
-  // Array de IDs de recetas favoritas (persistido en localStorage)
+  const [mostrarTodas, setMostrarTodas] = useState(false);
+
   const [favoritos, setFavoritos] = useLocalStorage("recetapp-favoritos", []);
-  // Array de IDs de recetas bloqueadas (persistido en localStorage)
   const [bloqueados, setBloqueados] = useLocalStorage("recetapp-bloqueados", []);
 
   useEffect(() => {
@@ -34,41 +34,40 @@ function App() {
         setCargando(false);
       }
     }
+
     cargarRecetas();
   }, []);
 
-  // Filtra por nombre Y excluye las recetas bloqueadas
   const recetasFiltradas = recetas.filter(
     (receta) =>
       receta.strMeal.toLowerCase().includes(busqueda.toLowerCase()) &&
       !bloqueados.includes(receta.idMeal)
   );
 
-  // Obtiene los objetos completos de las recetas favoritas
+  const recetasParaMostrar = mostrarTodas
+    ? recetasFiltradas
+    : recetasFiltradas.slice(0, 6);
+
   const recetasFavoritas = recetas.filter((receta) =>
     favoritos.includes(receta.idMeal)
   );
 
-  // Obtiene los objetos completos de las recetas bloqueadas
   const recetasBloqueadas = recetas.filter((receta) =>
     bloqueados.includes(receta.idMeal)
   );
 
-  //--Agrega o quita un ID del array de favoritos
   const toggleFavorito = (id) => {
     setFavoritos((prev) =>
       prev.includes(id) ? prev.filter((fav) => fav !== id) : [...prev, id]
     );
   };
 
-  //--Agrega o quita un ID del array de bloqueados
   const toggleBloqueo = (id) => {
     setBloqueados((prev) => {
       const yaBloqueado = prev.includes(id);
       return yaBloqueado ? prev.filter((b) => b !== id) : [...prev, id];
     });
 
-    // Si se está bloqueando (no estaba bloqueado antes), se saca de favoritos
     setFavoritos((prev) => prev.filter((fav) => fav !== id));
   };
 
@@ -78,7 +77,16 @@ function App() {
 
       {!cargando && !error && (
         <>
+          <section className="hero-section">
+            <h2>Encuentra tus platos favoritos</h2>
+            <p>
+              Busca platos, guárdalas como favoritas o bloquea las que no
+              quieres volver a ver.
+            </p>
+          </section>
+
           <SearchBar busqueda={busqueda} setBusqueda={setBusqueda} />
+
           <Stats
             total={recetas.length}
             favoritos={favoritos.length}
@@ -90,20 +98,43 @@ function App() {
       {cargando && <Loading />}
       {error && <ErrorMessage />}
 
-      {/* Layout de dos columnas: listado a la izquierda, panel a la derecha */}
       {!cargando && !error && (
         <div className="app-layout">
-          <RecipeList
-            recetas={recetasFiltradas}
-            favoritos={favoritos}
-            toggleFavorito={toggleFavorito}
-            toggleBloqueo={toggleBloqueo}
-          />
+          <section className="main-content">
+            <div className="section-header">
+              <div>
+                <h2>
+                  {mostrarTodas ? "Todas los platos" : "Platos recomendadas"}
+                </h2>
+
+                <p>
+                  Mostrando {recetasParaMostrar.length} de{" "}
+                  {recetasFiltradas.length} platos disponibles.
+                </p>
+              </div>
+
+              <button
+                className="btn-ver-todas"
+                onClick={() => setMostrarTodas(!mostrarTodas)}
+              >
+                {mostrarTodas ? "Ver recomendadas" : "Ver todos los platos"}
+              </button>
+            </div>
+
+            <RecipeList
+              recetas={recetasParaMostrar}
+              favoritos={favoritos}
+              toggleFavorito={toggleFavorito}
+              toggleBloqueo={toggleBloqueo}
+            />
+          </section>
+
           <div className="sidebar">
             <FavoritesPanel
               recetasFavoritas={recetasFavoritas}
               toggleFavorito={toggleFavorito}
             />
+
             <BlockedPanel
               recetasBloqueadas={recetasBloqueadas}
               toggleBloqueo={toggleBloqueo}

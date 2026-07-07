@@ -6,7 +6,7 @@ function BlockedPanel({ recetasBloqueadas, toggleBloqueo }) {
       <h2>🔒 Bloqueados ({recetasBloqueadas.length})</h2>
 
       {recetasBloqueadas.length === 0 && (
-        <p className="blocked-empty">No tienes recetas bloqueadas.</p>
+        <p className="blocked-empty">No tienes menus bloqueadas.</p>
       )}
 
       <ul className="blocked-list">
