@@ -1,11 +1,16 @@
 import RecipeCard from "./RecipeCard";
 
-function RecipeList() {
+function RecipeList({ recetas }) {
   return (
     <section>
       <h2>Listado de recetas</h2>
 
-      <RecipeCard />
+      {recetas.map((receta) => (
+        <RecipeCard
+          key={receta.idMeal}
+          receta={receta}
+        />
+      ))}
     </section>
   );
 }

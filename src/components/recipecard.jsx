@@ -1,14 +1,17 @@
-function RecipeCard() {
+function RecipeCard({ receta }) {
   return (
     <article>
       <img
-        src="https://via.placeholder.com/200"
-        alt="Receta de ejemplo"
+        src={receta.strMealThumb}
+        alt={receta.strMeal}
+        width="200"
       />
 
-      <h3>Nombre de la receta</h3>
+      <h3>{receta.strMeal}</h3>
 
-      <p>Categoría: ejemplo</p>
+      <p>Categoría: {receta.strCategory}</p>
+
+      <p>Origen: {receta.strArea}</p>
     </article>
   );
 }
