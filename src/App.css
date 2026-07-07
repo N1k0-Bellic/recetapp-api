@@ -236,23 +236,50 @@
 
 /* ===== RESPONSIVE (COMMIT 4) ===== */
 
-/* En pantallas pequeñas como celus el layout pasa de horizontal a vertical */
 @media (max-width: 768px) {
   .app-layout {
     flex-direction: column;
   }
 
-  /* El panel de favoritos pasa a ocupar el 100% del ancho debajo del listado
-     Se quita el borde izquierdo y se agrega borde superior como separador */
-  .favorites-panel {
+  /* El sidebar (favoritos + bloqueados) pasa a ocupar el 100% del ancho debajo del listado */
+  .sidebar {
     width: 100%;
     min-width: 100%;
+  }
+
+  .favorites-panel,
+  .blocked-panel {
     border-left: none;
     border-top: 1px solid var(--border);
     max-height: none;
-    /* position: static hace que deje de ser sticky en movil
-       ya que en una columna no tiene sentido el comportamiento sticky */
     position: static;
+  }
+
+  /* Las estadisticas se acomodan en columna en vez de fila */
+  .stats {
+    flex-direction: column;
+    gap: 6px;
+    padding: 0 20px;
+  }
+}
+
+/* Celulares angostos: una sola columna de tarjetas y menos padding */
+@media (max-width: 480px) {
+  .recipe-list {
+    grid-template-columns: 1fr;
+    padding: 0 12px 12px;
+  }
+
+  .search-bar {
+    padding: 0 12px;
+  }
+
+  .stats {
+    padding: 0 12px;
+  }
+
+  .recipe-card-actions {
+    gap: 6px;
   }
 }
 
