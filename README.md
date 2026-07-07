@@ -1,16 +1,31 @@
-# React + Vite
+# Explorador Gastronómico
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación web desarrollada con React que permite explorar diferentes platos de comida del mundo obtenidos desde [TheMealDB](https://www.themealdb.com/api.php).
 
-Currently, two official plugins are available:
+## Funcionalidades
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Listado de recetas con imágenes, cargado dinámicamente desde la API.
+- Búsqueda de recetas por nombre.
+- Filtro de recetas por país de origen.
+- Marcar y quitar recetas como favoritas, visibles en un panel lateral.
+- Bloquear y desbloquear recetas (las bloqueadas se excluyen automáticamente de los resultados).
+- Estadísticas en tiempo real: total de recetas, favoritas y bloqueadas.
+- Persistencia de favoritos y bloqueados en `localStorage`.
+- Diseño responsivo (móvil, tablet y escritorio).
 
-## React Compiler
+## Tecnologías
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React (componentes funcionales y hooks)
+- Vite
+- CSS
+- [TheMealDB API](https://www.themealdb.com/api.php)
 
-## Expanding the ESLint configuration
+## Integrantes
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Nicolas Diaz
+- Nicolas Chavez
+- Tomas Zamorano
+
+## Despliegue funcional en linea
+
+(https://recetapp-m0391jgs9-nic13.vercel.app/)
