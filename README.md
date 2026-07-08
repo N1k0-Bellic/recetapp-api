@@ -28,4 +28,4 @@ Aplicación web desarrollada con React que permite explorar diferentes platos de
 
 ## Despliegue funcional en linea
 
-(https://recetapp-m0391jgs9-nic13.vercel.app/)
+(https://recetapp-api-d57q.vercel.app/)
